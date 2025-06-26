@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright/python:v1.50.0-noble as builder
+FROM mcr.microsoft.com/playwright/python:v1.52.0-noble as builder
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 USER root
@@ -11,7 +11,7 @@ ENV UV_LINK_MODE=copy \
     DISPLAY=:99
 
 RUN apt-get update -y && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
     xvfb \
     tini \
     wget \
@@ -20,6 +20,8 @@ RUN apt-get update -y && \
     libnss3 \
     libxss1 \
     libxtst6 \
+    build-essential \
+    python3-dev \
     libasound2t64 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -30,6 +32,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=README.md,target=README.md \
     --mount=type=bind,source=src,target=src \
     uv sync --frozen --no-cache --no-dev
+
+# Install Camoufox GeoIP
+RUN uv run camoufox fetch
 
 ADD . /app
 
