@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=bind,source=README.md,target=README.md \
     --mount=type=bind,source=src,target=src \
-    uv sync --frozen --no-cache --no-dev
+    uv sync --frozen --no-cache --all-extras
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
@@ -26,9 +26,13 @@ RUN apt-get update -y && \
     curl && \
     rm -rf /var/lib/apt/lists/*
 
+RUN uv run playwright install --with-deps
+
 # Install Camoufox GeoIP
 RUN uv run camoufox fetch
 
 ADD . /app
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
+
+CMD xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' uv run hc --help
