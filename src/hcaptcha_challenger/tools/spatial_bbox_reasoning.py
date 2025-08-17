@@ -94,7 +94,7 @@ class SpatialBboxReasoner(_Reasoner[SCoTModelType]):
         system_instruction = SYSTEM_INSTRUCTIONS
 
         config = types.GenerateContentConfig(
-            temperature=0,
+            temperature=kwargs.get("temperature", 0),
             system_instruction=system_instruction,
             thinking_config=self._pin_thinking_config(
                 model_to_use=model_to_use, thinking_budget=kwargs.get("thinking_budget")

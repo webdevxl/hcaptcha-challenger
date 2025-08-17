@@ -44,7 +44,9 @@ class _Reasoner(ABC, Generic[M]):
             if model_to_use not in THINKING_BUDGET_MODELS or not isinstance(thinking_budget, int):
                 return
             # Must turn on spatial reasoning
-            if thinking_budget == 0 or thinking_budget < -1 or thinking_budget > 32768:
+            if model_to_use.startswith("gemini-2.5-pro") and thinking_budget == 0:
+                thinking_budget = -1
+            if thinking_budget < -1 or thinking_budget > 32768:
                 thinking_budget = -1
             return ThinkingConfig(include_thoughts=False, thinking_budget=thinking_budget)
         except Exception as err:
