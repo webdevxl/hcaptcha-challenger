@@ -237,6 +237,7 @@ def _visualize_drag_drop(
             fontsize=9,
             ha='center',
             bbox=dict(boxstyle='round,pad=0.3', facecolor='yellow', alpha=0.5),
+            zorder=1000,
         )
 
 

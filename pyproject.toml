@@ -105,7 +105,7 @@ exclude = ["_archive/", "*.ipynb"]
 
 [dependency-groups]
 dev = [
-    "black>=25.1.0",
+    "black[jupyter]>=25.1.0",
     "ipykernel>=6.30.1",
     "ipywidgets>=8.1.7",
     "jupyterlab-language-pack-zh-cn>=4.4.post1",
