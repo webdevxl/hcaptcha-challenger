@@ -176,3 +176,5 @@ tests/dataset/
 docs/assets/2d_spatial_understanding
 docs/assets/3d_spatial_understanding
 generate_content
+
+docs/assets/image_drag_drop/coordinate_grid*.png
