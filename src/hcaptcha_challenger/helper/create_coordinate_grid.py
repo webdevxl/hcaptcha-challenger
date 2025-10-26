@@ -208,7 +208,14 @@ def create_coordinate_grid(
     # Get the RGBA buffer from the figure
     buf = fig.canvas.buffer_rgba()  # type: ignore[attr-defined]
     img_with_grid = np.frombuffer(buf, dtype=np.uint8)
-    img_with_grid = img_with_grid.reshape(fig.canvas.get_width_height()[::-1] + (4,))
+
+    # Get canvas dimensions and handle Retina/HiDPI displays
+    width, height = fig.canvas.get_width_height()
+    if hasattr(fig.canvas, 'device_pixel_ratio'):
+      dpr = int(fig.canvas.device_pixel_ratio)
+      width, height = width * dpr, height * dpr
+          
+    img_with_grid = img_with_grid.reshape((height, width, 4))
 
     # Close the figure to free memory
     plt.close(fig)
