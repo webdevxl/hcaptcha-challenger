@@ -306,8 +306,8 @@ class RoboticArm:
         self.captcha_payload: CaptchaPayload | None = None
         self._challenge_prompt: str | None = None
 
-        self._checkbox_selector = "//iframe[starts-with(@src,'https://newassets.hcaptcha.com/captcha/v1/') and contains(@src, 'frame=checkbox')]"
-        self._challenge_selector = "//iframe[starts-with(@src,'https://newassets.hcaptcha.com/captcha/v1/') and contains(@src, 'frame=challenge')]"
+        self._checkbox_selector = "//iframe[(contains(@src, 'hcaptcha.com') and contains(@src, 'frame=checkbox')) or (contains(@src, 'captcha'))]"
+        self._challenge_selector = "//iframe[contains(@src, 'captcha') or contains(@title, 'captcha') or contains(@title, 'captcha')]"
 
     @property
     def checkbox_selector(self) -> str:
@@ -332,10 +332,7 @@ class RoboticArm:
             challenge_frames = []
             all_frames = self.page.frames
             for frame in all_frames:
-                if (
-                    frame.url.startswith("https://newassets.hcaptcha.com/captcha/v1/")
-                    and "frame=challenge" in frame.url
-                ):
+                if "captcha" in frame.url.lower() or (frame.url.startswith("https://newassets.hcaptcha.com/captcha/v1/") and "frame=challenge" in frame.url):
                     challenge_frames.append(frame)
 
             for frame in challenge_frames:
@@ -360,8 +357,8 @@ class RoboticArm:
         for child_frame in frame.child_frames:
             if (
                 not child_frame.child_frames
-                and child_frame.url.startswith("https://newassets.hcaptcha.com/captcha/v1/")
-                and "frame=challenge" in child_frame.url
+                and ("captcha" in child_frame.url.lower() or child_frame.url.startswith("https://newassets.hcaptcha.com/captcha/v1/")
+                and "frame=challenge" in child_frame.url)
             ):
                 candidate_frames.append(child_frame)
             else:

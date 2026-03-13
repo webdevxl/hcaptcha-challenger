@@ -62,11 +62,13 @@ class Collector:
 
     @property
     def checkbox_selector(self) -> str:
-        return "//iframe[starts-with(@src,'https://newassets.hcaptcha.com/captcha/v1/') and contains(@src, 'frame=checkbox')]"
+        # Support both standard hCaptcha and white-label implementations
+        return "//iframe[(contains(@src, 'hcaptcha.com') and contains(@src, 'frame=checkbox')) or (contains(@src, 'captcha'))]"
 
     @property
     def challenge_selector(self) -> str:
-        return "//iframe[starts-with(@src,'https://newassets.hcaptcha.com/captcha/v1/') and contains(@src, 'frame=challenge')]"
+        # Support both standard hCaptcha and white-label implementations
+        return "//iframe[(contains(@src, 'hcaptcha.com') and contains(@src, 'frame=challenge')) or (contains(@src, 'captcha'))]"
 
     @property
     def remaining_progress(self) -> int:
