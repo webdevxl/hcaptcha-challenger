@@ -306,8 +306,8 @@ class RoboticArm:
         self.captcha_payload: CaptchaPayload | None = None
         self._challenge_prompt: str | None = None
 
-        self._checkbox_selector = "//iframe[(contains(@src, 'hcaptcha.com') and contains(@src, 'frame=checkbox')) or (contains(@src, 'captcha'))]"
-        self._challenge_selector = "//iframe[contains(@src, 'captcha') or contains(@title, 'captcha') or contains(@title, 'captcha')]"
+        self._checkbox_selector = "//iframe[(contains(@src, 'frame=checkbox')) or (contains(@title, 'captcha'))]"
+        self._challenge_selector = "//iframe[(contains(@src, 'frame=challenge')) or contains(@title, 'challenge') or contains(@src, 'captcha')]"
 
     @property
     def checkbox_selector(self) -> str:
